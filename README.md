@@ -1,6 +1,6 @@
 # NativeMaps
 
-An experimental React Native maps library — my first native module project, built as a way to **learn React Native’s new architecture** while aiming for a performant, production‑ready solution.
+An experimental React Native maps library. It's my first native module project, built as a way to **learn React Native’s new architecture** while aiming for a performant, production‑ready solution.
 
 > **Note:** This is a work in progress and **not production-ready**.
 
