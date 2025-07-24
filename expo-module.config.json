@@ -1,0 +1,9 @@
+{
+  "platforms": ["apple", "android", "web"],
+  "apple": {
+    "modules": ["NativeMapsModule"]
+  },
+  "android": {
+    "modules": ["expo.modules.nativemaps.NativeMapsModule"]
+  }
+}
