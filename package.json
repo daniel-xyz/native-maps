@@ -1,7 +1,7 @@
 {
   "name": "native-maps",
   "version": "0.1.0",
-  "description": "This is a learning project. The goal is to build a performant react native library that supports Google Maps and MapKit, as well as clustering and other collision logic.",
+  "description": "This is a learning project aimed at building a high‑performance React Native maps library. It supports Google Maps and Apple MapKit, with efficient marker clustering and collision logic for smooth map interactions.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
