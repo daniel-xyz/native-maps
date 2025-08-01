@@ -1,38 +1,42 @@
 import ExpoModulesCore
-import WebKit
+import MapKit
 
-// This view will be used as a native component. Make sure to inherit from `ExpoView`
-// to apply the proper styling (e.g. border radius and shadows).
 class NativeMapsView: ExpoView {
-  let webView = WKWebView()
-  let onLoad = EventDispatcher()
-  var delegate: WebViewDelegate?
+  let mapView = MKMapView()
+  let onMapPress = EventDispatcher()
 
   required init(appContext: AppContext? = nil) {
     super.init(appContext: appContext)
     clipsToBounds = true
-    delegate = WebViewDelegate { url in
-      self.onLoad(["url": url])
-    }
-    webView.navigationDelegate = delegate
-    addSubview(webView)
+    
+    // Configure map view with sensible defaults
+    mapView.mapType = .standard
+    mapView.isZoomEnabled = true
+    mapView.isScrollEnabled = true
+    mapView.isRotateEnabled = true
+    mapView.isPitchEnabled = true
+    mapView.showsUserLocation = false
+    
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleMapTap(_:)))
+    mapView.addGestureRecognizer(tapGesture)
+    
+    addSubview(mapView)
+  }
+  
+  @objc private func handleMapTap(_ gesture: UITapGestureRecognizer) {
+    let point = gesture.location(in: mapView)
+    let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
+    
+    let coordinateData = [
+      "latitude": coordinate.latitude,
+      "longitude": coordinate.longitude
+    ]
+    
+    onMapPress(["coordinate": coordinateData])
   }
 
   override func layoutSubviews() {
-    webView.frame = bounds
-  }
-}
-
-class WebViewDelegate: NSObject, WKNavigationDelegate {
-  let onUrlChange: (String) -> Void
-
-  init(onUrlChange: @escaping (String) -> Void) {
-    self.onUrlChange = onUrlChange
-  }
-
-  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation) {
-    if let url = webView.url {
-      onUrlChange(url.absoluteString)
-    }
+    super.layoutSubviews()
+    mapView.frame = bounds
   }
 }

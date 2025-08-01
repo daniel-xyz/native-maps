@@ -1,48 +1,41 @@
 import ExpoModulesCore
+import MapKit
 
 public class NativeMapsModule: Module {
-  // Each module class must implement the definition function. The definition consists of components
-  // that describes the module's functionality and behavior.
-  // See https://docs.expo.dev/modules/module-api for more details about available components.
   public func definition() -> ModuleDefinition {
-    // Sets the name of the module that JavaScript code will use to refer to the module. Takes a string as an argument.
-    // Can be inferred from module's class name, but it's recommended to set it explicitly for clarity.
-    // The module will be accessible from `requireNativeModule('NativeMaps')` in JavaScript.
     Name("NativeMaps")
 
-    // Sets constant properties on the module. Can take a dictionary or a closure that returns a dictionary.
-    Constants([
-      "PI": Double.pi
-    ])
-
-    // Defines event names that the module can send to JavaScript.
-    Events("onChange")
-
-    // Defines a JavaScript synchronous function that runs the native code on the JavaScript thread.
-    Function("hello") {
-      return "Hello world! 👋"
-    }
-
-    // Defines a JavaScript function that always returns a Promise and whose native code
-    // is by default dispatched on the different thread than the JavaScript runtime runs on.
-    AsyncFunction("setValueAsync") { (value: String) in
-      // Send an event to JavaScript.
-      self.sendEvent("onChange", [
-        "value": value
-      ])
-    }
-
-    // Enables the module to be used as a native view. Definition components that are accepted as part of the
-    // view definition: Prop, Events.
     View(NativeMapsView.self) {
-      // Defines a setter for the `url` prop.
-      Prop("url") { (view: NativeMapsView, url: URL) in
-        if view.webView.url != url {
-          view.webView.load(URLRequest(url: url))
+      Prop("initialRegion") { (view: NativeMapsView, region: [String: Double]) in
+        guard let lat = region["latitude"],
+              let lng = region["longitude"] else { return }
+        
+        let zoom = region["zoom"] ?? 12.0
+        guard zoom > 0 && zoom.isFinite else { return }
+        
+        let center = CLLocationCoordinate2D(latitude: lat, longitude: lng)
+        let deltaFromZoom = 360.0 / pow(2.0, zoom)
+        let span = MKCoordinateSpan(latitudeDelta: deltaFromZoom, longitudeDelta: deltaFromZoom)
+        let region = MKCoordinateRegion(center: center, span: span)
+        view.mapView.setRegion(region, animated: false)
+      }
+      
+      Prop("showsUserLocation") { (view: NativeMapsView, showsUserLocation: Bool) in
+        view.mapView.showsUserLocation = showsUserLocation
+      }
+      
+      Prop("mapType") { (view: NativeMapsView, mapType: String) in
+        switch mapType {
+        case "satellite":
+          view.mapView.mapType = .satellite
+        case "hybrid":
+          view.mapView.mapType = .hybrid
+        default:
+          view.mapView.mapType = .standard
         }
       }
-
-      Events("onLoad")
+      
+      Events("onMapPress")
     }
   }
 }

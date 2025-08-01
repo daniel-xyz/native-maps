@@ -1,15 +1,12 @@
-import { registerWebModule, NativeModule } from 'expo';
+import { registerWebModule, NativeModule } from "expo";
 
-import { NativeMapsModuleEvents } from './NativeMaps.types';
-
-class NativeMapsModule extends NativeModule<NativeMapsModuleEvents> {
-  PI = Math.PI;
-  async setValueAsync(value: string): Promise<void> {
-    this.emit('onChange', { value });
-  }
-  hello() {
-    return 'Hello world! 👋';
-  }
+/**
+ * Web implementation of the native maps module
+ * This provides a minimal fallback for web platforms
+ */
+class NativeMapsModule extends NativeModule {
+  // Web implementation - no additional functionality needed
+  // The view component will handle web rendering
 }
 
-export default registerWebModule(NativeMapsModule, 'NativeMapsModule');
+export default registerWebModule(NativeMapsModule, "NativeMapsModule");

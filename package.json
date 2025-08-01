@@ -1,7 +1,7 @@
 {
   "name": "native-maps",
   "version": "0.1.0",
-  "description": "This is a learning project aimed at building a high‑performance React Native maps library. It supports Google Maps and Apple MapKit, with efficient marker clustering and collision logic for smooth map interactions.",
+  "description": "This is a learning project aimed at building a high-performance React Native maps library.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
@@ -13,7 +13,9 @@
     "prepublishOnly": "expo-module prepublishOnly",
     "expo-module": "expo-module",
     "open:ios": "xed example/ios",
-    "open:android": "open -a \"Android Studio\" example/android"
+    "open:android": "open -a \"Android Studio\" example/android",
+    "run:ios": "cd example && expo run:ios",
+    "run:android": "cd example && expo run:android"
   },
   "keywords": [
     "react-native",

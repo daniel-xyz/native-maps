@@ -1,19 +1,56 @@
-import type { StyleProp, ViewStyle } from 'react-native';
+import type { StyleProp, ViewStyle } from "react-native";
 
-export type OnLoadEventPayload = {
-  url: string;
+/**
+ * Coordinate data for map interactions
+ */
+export type Coordinate = {
+  latitude: number;
+  longitude: number;
 };
 
-export type NativeMapsModuleEvents = {
-  onChange: (params: ChangeEventPayload) => void;
+/**
+ * Event payload for map press interactions
+ */
+export type MapPressEvent = {
+  nativeEvent: {
+    coordinate: Coordinate;
+  };
 };
 
-export type ChangeEventPayload = {
-  value: string;
-};
-
+/**
+ * Props for the NativeMapsView component
+ * Follows react-native-maps convention for production use
+ */
 export type NativeMapsViewProps = {
-  url: string;
-  onLoad: (event: { nativeEvent: OnLoadEventPayload }) => void;
+  /**
+   * Callback that is called when user presses on the map
+   * @param event - Contains coordinate information of the press location
+   */
+  onMapPress?: (event: MapPressEvent) => void;
+
+  /**
+   * Style to be applied to the map view
+   */
   style?: StyleProp<ViewStyle>;
+
+  /**
+   * Initial region to display on the map
+   */
+  initialRegion?: {
+    latitude: number;
+    longitude: number;
+    zoom?: number;
+  };
+
+  /**
+   * Whether the map should show the user's location
+   * @default false
+   */
+  showsUserLocation?: boolean;
+
+  /**
+   * The map type to display
+   * @default 'standard'
+   */
+  mapType?: "standard" | "satellite" | "hybrid";
 };
