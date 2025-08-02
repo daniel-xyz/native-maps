@@ -1,6 +1,6 @@
 import React from "react";
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { NativeMapsView, MapPressEvent } from "native-maps";
+import { AppleMaps, MapPressEvent } from "native-maps";
 
 interface MapScreenProps {
   onBack: () => void;
@@ -25,7 +25,7 @@ export default function MapScreen({ onBack }: MapScreenProps) {
         <Text style={styles.backButtonText}>← Back</Text>
       </TouchableOpacity>
 
-      <NativeMapsView
+      <AppleMaps.View
         style={styles.map}
         onMapPress={handleMapPress}
         initialRegion={{

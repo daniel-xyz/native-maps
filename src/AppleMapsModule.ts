@@ -1,11 +1,11 @@
 import { NativeModule, requireNativeModule } from "expo";
 
 /**
- * Minimal native module for Maps functionality
+ * Apple Maps native module for iOS MapKit functionality
  */
-declare class NativeMapsModule extends NativeModule {
+declare class AppleMapsModule extends NativeModule {
   // This module only provides the view component, no additional functions needed
 }
 
 // This call loads the native module object from the JSI.
-export default requireNativeModule<NativeMapsModule>("NativeMaps");
+export default requireNativeModule<AppleMapsModule>("AppleMaps");

@@ -1,12 +1,12 @@
 import * as React from "react";
 
-import { NativeMapsViewProps } from "./NativeMaps.types";
+import { AppleMapsViewProps } from "./AppleMaps.types";
 
 /**
- * Production-ready web implementation of the native maps view
+ * Web implementation of Apple Maps view
  * In production, this would integrate with a web mapping library like Mapbox or Google Maps
  */
-export default function NativeMapsView(props: NativeMapsViewProps) {
+export default function AppleMapsView(props: AppleMapsViewProps) {
   // Default region or use provided initialRegion
   const centerLat = props.initialRegion?.latitude ?? 37.7749;
   const centerLng = props.initialRegion?.longitude ?? -122.4194;
@@ -23,9 +23,11 @@ export default function NativeMapsView(props: NativeMapsViewProps) {
 
       // Follow react-native-maps event structure
       props.onMapPress({
-        coordinate: {
-          latitude,
-          longitude,
+        nativeEvent: {
+          coordinate: {
+            latitude,
+            longitude,
+          },
         },
       });
     }
@@ -61,7 +63,7 @@ export default function NativeMapsView(props: NativeMapsViewProps) {
       }}
     >
       <div style={{ marginBottom: "10px" }}>
-        🗺️ Native Map ({getMapTypeDisplay()})
+        🍎 Apple Maps ({getMapTypeDisplay()})
       </div>
       <div style={{ fontSize: "12px", opacity: 0.7 }}>
         Click for coordinates

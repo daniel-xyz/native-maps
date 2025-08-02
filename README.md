@@ -14,14 +14,17 @@ An **experimental** React Native maps library. It's my first native module proje
 ## Roadmap / TODO
 
 - [x] Initialize project with `create-expo-module`
-- [ ] Implement a basic MapKit view (render map in React Native)
-- [ ] Add props (center coordinate, zoom, markers)
-- [ ] Handle user interaction events (tap, region change)
-- [ ] Add custom marker support (images, touch events)
-- [ ] Implement native marker clustering for iOS
+- [x] Implement basic AppleMaps view (iOS)
+- [ ] Make basic props for AppleMaps view work (onMapPress, initialRegion, showsUserLocation, mapType, setCamera)
+- [ ] Implement basic GoogleMaps view (Android)
+- [ ] Make basic props for GoogleMaps view work
+- [ ] Show custom markers with custom views (AppleMaps)
+- [ ] Show custom markers with custom views (GoogleMaps)
+- [ ] Add onPress event to markers (both platforms)
+- [ ] Implement native marker clustering (AppleMaps)
+- [ ] Implement native marker clustering (GoogleMaps)
 - [ ] Optimize collision and clustering with NitroModules
-- [ ] Write examples, documentation, and tests
-- [ ] Add Google Maps (Android) support
+- [ ] Implement web support
 
 ## License
 

@@ -1,5 +1,11 @@
-// Reexport the native module. On web, it will be resolved to NativeMapsModule.web.ts
-// and on native platforms to NativeMapsModule.ts
-export { default } from './NativeMapsModule';
-export { default as NativeMapsView } from './NativeMapsView';
-export * from  './NativeMaps.types';
+// Reexport the native module. On web, it will be resolved to AppleMapsModule.web.ts
+// and on native platforms to AppleMapsModule.ts
+export { default } from "./AppleMapsModule";
+export { default as AppleMapsView } from "./AppleMapsView";
+export * from "./AppleMaps.types";
+
+import AppleMapsViewComponent from "./AppleMapsView";
+
+export const AppleMaps = {
+  View: AppleMapsViewComponent,
+};

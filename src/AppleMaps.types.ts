@@ -18,10 +18,10 @@ export type MapPressEvent = {
 };
 
 /**
- * Props for the NativeMapsView component
+ * Props for the AppleMapsView component
  * Follows react-native-maps convention for production use
  */
-export type NativeMapsViewProps = {
+export type AppleMapsViewProps = {
   /**
    * Callback that is called when user presses on the map
    * @param event - Contains coordinate information of the press location

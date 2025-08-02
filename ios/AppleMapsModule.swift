@@ -1,12 +1,12 @@
 import ExpoModulesCore
 import MapKit
 
-public class NativeMapsModule: Module {
+public class AppleMapsModule: Module {
   public func definition() -> ModuleDefinition {
-    Name("NativeMaps")
+    Name("AppleMaps")
 
-    View(NativeMapsView.self) {
-      Prop("initialRegion") { (view: NativeMapsView, region: [String: Double]) in
+    View(AppleMapsView.self) {
+      Prop("initialRegion") { (view: AppleMapsView, region: [String: Double]) in
         guard let lat = region["latitude"],
               let lng = region["longitude"] else { return }
         
@@ -20,11 +20,11 @@ public class NativeMapsModule: Module {
         view.mapView.setRegion(region, animated: false)
       }
       
-      Prop("showsUserLocation") { (view: NativeMapsView, showsUserLocation: Bool) in
+      Prop("showsUserLocation") { (view: AppleMapsView, showsUserLocation: Bool) in
         view.mapView.showsUserLocation = showsUserLocation
       }
       
-      Prop("mapType") { (view: NativeMapsView, mapType: String) in
+      Prop("mapType") { (view: AppleMapsView, mapType: String) in
         switch mapType {
         case "satellite":
           view.mapView.mapType = .satellite

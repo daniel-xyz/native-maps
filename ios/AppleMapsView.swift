@@ -1,7 +1,7 @@
 import ExpoModulesCore
 import MapKit
 
-class NativeMapsView: ExpoView {
+class AppleMapsView: ExpoView {
   let mapView = MKMapView()
   let onMapPress = EventDispatcher()
 

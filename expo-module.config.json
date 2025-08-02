@@ -1,9 +1,9 @@
 {
   "platforms": ["apple", "android", "web"],
   "apple": {
-    "modules": ["NativeMapsModule"]
+    "modules": ["AppleMapsModule"]
   },
   "android": {
-    "modules": ["expo.modules.nativemaps.NativeMapsModule"]
+    "modules": ["expo.modules.googlemaps.GoogleMapsModule"]
   }
 }
