@@ -11,6 +11,7 @@ import {
   Switch,
   StyleSheet,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import { MapTypeSelector } from "./MapTypeSelector";
 import { LocationPresets } from "./LocationPresets";
@@ -34,91 +35,76 @@ export function SettingsPanel() {
     <Modal
       visible={showSettings}
       animationType="slide"
-      presentationStyle="pageSheet"
+      transparent={true}
       onRequestClose={toggleSettings}
     >
-      <View style={styles.modalContainer}>
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>Map Settings</Text>
-          <TouchableOpacity
-            style={styles.closeButton}
-            onPress={toggleSettings}
-            accessibilityLabel="Close settings"
+      <TouchableOpacity
+        style={styles.modalOverlay}
+        activeOpacity={1}
+        onPress={toggleSettings}
+      >
+        <TouchableOpacity
+          style={styles.modalContainer}
+          activeOpacity={1}
+          onPress={(e) => e.stopPropagation()}
+        >
+          <ScrollView
+            style={styles.content}
+            showsVerticalScrollIndicator={false}
           >
-            <Text style={styles.closeButtonText}>✕</Text>
-          </TouchableOpacity>
-        </View>
+            <MapTypeSelector selectedType={mapType} onTypeChange={setMapType} />
 
-        <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-          <MapTypeSelector selectedType={mapType} onTypeChange={setMapType} />
+            <View style={styles.settingRow}>
+              <Text style={styles.settingLabel}>Show User Location</Text>
+              <Switch
+                value={showsUserLocation}
+                onValueChange={setShowsUserLocation}
+                trackColor={{ false: "#ccc", true: "#007AFF" }}
+                thumbColor="#fff"
+                accessibilityLabel="Toggle user location visibility"
+              />
+            </View>
 
-          <View style={styles.settingRow}>
-            <Text style={styles.settingLabel}>Show User Location</Text>
-            <Switch
-              value={showsUserLocation}
-              onValueChange={setShowsUserLocation}
-              trackColor={{ false: "#ccc", true: "#007AFF" }}
-              thumbColor="#fff"
-              accessibilityLabel="Toggle user location visibility"
-            />
-          </View>
+            <View style={styles.settingRow}>
+              <Text style={styles.settingLabel}>Animate Camera</Text>
+              <Switch
+                value={animateCamera}
+                onValueChange={setAnimateCamera}
+                trackColor={{ false: "#ccc", true: "#007AFF" }}
+                thumbColor="#fff"
+                accessibilityLabel="Toggle camera animations"
+              />
+            </View>
 
-          <View style={styles.settingRow}>
-            <Text style={styles.settingLabel}>Animate Camera</Text>
-            <Switch
-              value={animateCamera}
-              onValueChange={setAnimateCamera}
-              trackColor={{ false: "#ccc", true: "#007AFF" }}
-              thumbColor="#fff"
-              accessibilityLabel="Toggle camera animations"
-            />
-          </View>
-
-          <LocationPresets onLocationSelect={handleLocationPreset} />
-          <CurrentPosition position={cameraPosition} />
-        </ScrollView>
-      </View>
+            <LocationPresets onLocationSelect={handleLocationPreset} />
+            <CurrentPosition position={cameraPosition} />
+          </ScrollView>
+        </TouchableOpacity>
+      </TouchableOpacity>
     </Modal>
   );
 }
 
+const { height: screenHeight } = Dimensions.get("window");
+
 const styles = StyleSheet.create({
-  modalContainer: {
+  modalOverlay: {
     flex: 1,
+    justifyContent: "flex-end",
+  },
+  modalContainer: {
+    height: screenHeight * 0.75,
     backgroundColor: "#f5f5f5",
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    backgroundColor: "#fff",
-    borderBottomWidth: 1,
-    borderBottomColor: "#e1e1e1",
-    shadowColor: "#000",
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  closeButton: {
-    padding: 8,
-    borderRadius: 8,
-    backgroundColor: "#f0f0f0",
-  },
-  closeButtonText: {
-    fontSize: 18,
-    color: "#333",
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   content: {
     flex: 1,
-    padding: 16,
+    paddingHorizontal: 16,
   },
   settingRow: {
     flexDirection: "row",

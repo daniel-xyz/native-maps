@@ -49,7 +49,6 @@ export const useMapState = ({
         zoom: location.zoom,
         animated: animateCamera,
       });
-      setShowSettings(false);
     },
     [mapRef, animateCamera]
   );
