@@ -1,83 +1,53 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
+import { View, StyleSheet } from "react-native";
+import { AppleMaps, AppleMapsViewRef } from "native-maps";
+import { MapHeader, SettingsPanel } from "./components";
 import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import MapScreen from "./MapScreen";
+  MapStateProvider,
+  useMapStateContext,
+} from "./contexts/MapStateContext";
 
-export default function App() {
-  const [showMap, setShowMap] = useState(false);
-
-  if (showMap) {
-    return <MapScreen onBack={() => setShowMap(false)} />;
-  }
+function MapContent({
+  mapRef,
+}: {
+  mapRef: React.RefObject<AppleMapsViewRef | null>;
+}) {
+  const { mapType, showsUserLocation } = useMapStateContext();
+  const { cameraPosition, handleMapPress } = useMapStateContext();
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.header}>🗺️ Native Maps</Text>
-        <Text style={styles.subtitle}>
-          Simple example showing native MapKit integration
-        </Text>
-
-        <TouchableOpacity
-          style={styles.mapButton}
-          onPress={() => setShowMap(true)}
-        >
-          <Text style={styles.mapButtonText}>Open Map View</Text>
-        </TouchableOpacity>
-
-        <Text style={styles.instruction}>
-          Tap the map to see coordinates logged to console
-        </Text>
-      </View>
-    </SafeAreaView>
+    <>
+      <MapHeader />
+      <AppleMaps.View
+        ref={mapRef}
+        style={styles.map}
+        onMapPress={handleMapPress}
+        cameraPosition={cameraPosition}
+        showsUserLocation={showsUserLocation}
+        mapType={mapType}
+      />
+      <SettingsPanel />
+    </>
   );
 }
 
+export default function App() {
+  const mapRef = useRef<AppleMapsViewRef>(null);
+
+  return (
+    <View style={styles.container}>
+      <MapStateProvider mapRef={mapRef}>
+        <MapContent mapRef={mapRef} />
+      </MapStateProvider>
+    </View>
+  );
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f5f5f5",
   },
-  content: {
+  map: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 40,
-  },
-  header: {
-    fontSize: 36,
-    fontWeight: "bold",
-    marginBottom: 16,
-    textAlign: "center",
-  },
-  subtitle: {
-    fontSize: 18,
-    color: "#666",
-    textAlign: "center",
-    marginBottom: 40,
-    lineHeight: 24,
-  },
-  mapButton: {
-    backgroundColor: "#007AFF",
-    paddingHorizontal: 32,
-    paddingVertical: 16,
-    borderRadius: 12,
-    marginBottom: 24,
-  },
-  mapButtonText: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "600",
-  },
-  instruction: {
-    fontSize: 14,
-    color: "#888",
-    textAlign: "center",
-    fontStyle: "italic",
   },
 });

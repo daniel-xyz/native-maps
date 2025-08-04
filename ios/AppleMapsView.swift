@@ -10,12 +10,12 @@ class AppleMapsView: ExpoView {
     clipsToBounds = true
     
     // Configure map view with sensible defaults
-    mapView.mapType = .standard
-    mapView.isZoomEnabled = true
-    mapView.isScrollEnabled = true
-    mapView.isRotateEnabled = true
-    mapView.isPitchEnabled = true
-    mapView.showsUserLocation = false
+    // mapView.mapType = .standard
+    // mapView.isZoomEnabled = true
+    // mapView.isScrollEnabled = true
+    // mapView.isRotateEnabled = true
+    // mapView.isPitchEnabled = true
+    // mapView.showsUserLocation = false
     
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleMapTap(_:)))
     mapView.addGestureRecognizer(tapGesture)
@@ -38,5 +38,19 @@ class AppleMapsView: ExpoView {
   override func layoutSubviews() {
     super.layoutSubviews()
     mapView.frame = bounds
+  }
+  
+  func setCameraPosition(latitude: Double, longitude: Double, zoom: Double, animated: Bool) {
+    print("📍 setCameraPosition - lat: \(latitude), lng: \(longitude), zoom: \(zoom)")
+    
+    let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    let deltaFromZoom = 360.0 / pow(2.0, zoom)
+    let span = MKCoordinateSpan(latitudeDelta: deltaFromZoom, longitudeDelta: deltaFromZoom)
+    let region = MKCoordinateRegion(center: center, span: span)
+    
+    DispatchQueue.main.async {
+      self.mapView.setRegion(region, animated: animated)
+      print("✅ map region updated successfully via setCameraPosition")
+    }
   }
 }

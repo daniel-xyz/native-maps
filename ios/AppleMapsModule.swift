@@ -6,7 +6,7 @@ public class AppleMapsModule: Module {
     Name("AppleMaps")
 
     View(AppleMapsView.self) {
-      Prop("initialRegion") { (view: AppleMapsView, region: [String: Double]) in
+      Prop("cameraPosition") { (view: AppleMapsView, region: [String: Double]) in
         guard let lat = region["latitude"],
               let lng = region["longitude"] else { return }
         
@@ -33,6 +33,11 @@ public class AppleMapsModule: Module {
         default:
           view.mapView.mapType = .standard
         }
+      }
+      
+        AsyncFunction("setCameraPosition") { (view: AppleMapsView, latitude: Double, longitude: Double, zoom: Double, animated: Bool?) in
+        print("📍 setCameraPosition - lat: \(latitude), lng: \(longitude), zoom: \(zoom)")
+        view.setCameraPosition(latitude: latitude, longitude: longitude, zoom: zoom, animated: animated ?? true)
       }
       
       Events("onMapPress")

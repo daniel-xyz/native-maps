@@ -1,14 +1,40 @@
 import { requireNativeView } from "expo";
 import * as React from "react";
 
-import { AppleMapsViewProps } from "./AppleMaps.types";
+import {
+  AppleMapsViewProps,
+  AppleMapsViewRef,
+  CameraPositionChange,
+} from "./AppleMaps.types";
 
-const NativeView: React.ComponentType<AppleMapsViewProps> =
+const NativeView: React.ComponentType<AppleMapsViewProps & { ref?: any }> =
   requireNativeView("AppleMaps");
 
-/**
- * Apple Maps view component that renders a MapKit view on iOS
- */
-export default function AppleMapsView(props: AppleMapsViewProps) {
-  return <NativeView {...props} />;
-}
+const AppleMapsView = React.forwardRef<AppleMapsViewRef, AppleMapsViewProps>(
+  (props, ref) => {
+    const nativeRef = React.useRef<any>(null);
+
+    React.useImperativeHandle(
+      ref,
+      () => ({
+        setCameraPosition: async (props: CameraPositionChange) => {
+          if (nativeRef.current?.setCameraPosition) {
+            await nativeRef.current.setCameraPosition(
+              props.latitude,
+              props.longitude,
+              props.zoom,
+              props.animated
+            );
+          }
+        },
+      }),
+      []
+    );
+
+    return <NativeView ref={nativeRef} {...props} />;
+  }
+);
+
+AppleMapsView.displayName = "AppleMapsView";
+
+export default AppleMapsView;

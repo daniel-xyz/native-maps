@@ -2,14 +2,9 @@ import * as React from "react";
 
 import { AppleMapsViewProps } from "./AppleMaps.types";
 
-/**
- * Web implementation of Apple Maps view
- * In production, this would integrate with a web mapping library like Mapbox or Google Maps
- */
 export default function AppleMapsView(props: AppleMapsViewProps) {
-  // Default region or use provided initialRegion
-  const centerLat = props.initialRegion?.latitude ?? 37.7749;
-  const centerLng = props.initialRegion?.longitude ?? -122.4194;
+  const centerLat = props.cameraPosition?.latitude ?? 37.7749;
+  const centerLng = props.cameraPosition?.longitude ?? -122.4194;
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (props.onMapPress) {
