@@ -16,6 +16,7 @@ export interface MapState {
   showsUserLocation: boolean;
   cameraPosition: CameraPosition;
   animateCamera: boolean;
+  locationPermissionGranted: boolean;
 }
 
 export interface MapActions {
@@ -26,4 +27,5 @@ export interface MapActions {
   setAnimateCamera: (animate: boolean) => void;
   handleLocationPreset: (location: PresetLocation) => void;
   toggleSettings: () => void;
+  requestLocationPermission: () => Promise<void>;
 }

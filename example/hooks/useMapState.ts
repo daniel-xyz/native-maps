@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import * as Location from "expo-location";
 import type { MapPressEvent, MapType, CameraPositionChange } from "native-maps";
 import type { PresetLocation } from "../types";
 import {
@@ -20,11 +21,13 @@ export const useMapState = ({
 }: UseMapStateProps): UseMapStateReturn => {
   const [showSettings, setShowSettings] = useState(false);
   const [mapType, setMapType] = useState<MapType>("standard");
-  const [showsUserLocation, setShowsUserLocation] = useState(true);
+  const [showsUserLocation, setShowsUserLocation] = useState(false);
   const [animateCamera, setAnimateCamera] = useState(true);
   const [cameraPosition, setCameraPosition] = useState<CameraPositionChange>(
     DEFAULT_CAMERA_POSITION
   );
+  const [locationPermissionGranted, setLocationPermissionGranted] =
+    useState(false);
 
   const handleMapPress = useCallback(
     (event: MapPressEvent) => {
@@ -57,6 +60,45 @@ export const useMapState = ({
     setShowSettings((prev) => !prev);
   }, [showSettings]);
 
+  const requestLocationPermission = useCallback(async () => {
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      const granted = status === "granted";
+      setLocationPermissionGranted(granted);
+
+      if (granted) {
+        setShowsUserLocation(true);
+      } else {
+        setShowsUserLocation(false);
+      }
+    } catch (error) {
+      console.error("Error requesting location permission:", error);
+      setLocationPermissionGranted(false);
+      setShowsUserLocation(false);
+    }
+  }, []);
+
+  // Check location permission status on mount
+  useEffect(() => {
+    const checkLocationPermission = async () => {
+      try {
+        const { status } = await Location.getForegroundPermissionsAsync();
+        const granted = status === "granted";
+        setLocationPermissionGranted(granted);
+
+        // If permission was already granted, enable user location
+        if (granted) {
+          setShowsUserLocation(true);
+        }
+      } catch (error) {
+        console.error("Error checking location permission:", error);
+        setLocationPermissionGranted(false);
+      }
+    };
+
+    checkLocationPermission();
+  }, []);
+
   return {
     // State
     showSettings,
@@ -64,6 +106,7 @@ export const useMapState = ({
     showsUserLocation,
     cameraPosition,
     animateCamera,
+    locationPermissionGranted,
 
     // State setters
     setShowSettings,
@@ -76,5 +119,6 @@ export const useMapState = ({
     handleMapPress,
     handleLocationPreset,
     toggleSettings,
+    requestLocationPermission,
   };
 };

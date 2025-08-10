@@ -27,9 +27,11 @@ An **experimental** React Native maps library. It's my first native module proje
 
 ### Further away
 
-- [ ] Marker Clustering
-- [ ] Optimized marker clustering with NitroModules
+- [ ] Fully native Marker Clustering (not depending on React render cycle)
 - [ ] Publish library to npm
+
+### Even further away and might never happen
+
 - [ ] Google Maps for iOS
 - [ ] Web Support
 

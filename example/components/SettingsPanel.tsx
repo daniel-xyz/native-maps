@@ -25,11 +25,13 @@ export function SettingsPanel() {
     showsUserLocation,
     animateCamera,
     cameraPosition,
+    locationPermissionGranted,
     setMapType,
     setShowsUserLocation,
     setAnimateCamera,
     handleLocationPreset,
     toggleSettings,
+    requestLocationPermission,
   } = useMapStateContext();
   return (
     <Modal
@@ -55,10 +57,39 @@ export function SettingsPanel() {
             <MapTypeSelector selectedType={mapType} onTypeChange={setMapType} />
 
             <View style={styles.settingRow}>
-              <Text style={styles.settingLabel}>Show User Location</Text>
+              <Text style={styles.settingLabel}>
+                Location Permission {locationPermissionGranted ? "✓" : ""}
+              </Text>
+              {!locationPermissionGranted ? (
+                <TouchableOpacity
+                  style={styles.permissionButton}
+                  onPress={requestLocationPermission}
+                >
+                  <Text style={styles.permissionButtonText}>Enable</Text>
+                </TouchableOpacity>
+              ) : (
+                <Text style={styles.permissionGrantedText}>Granted</Text>
+              )}
+            </View>
+
+            <View
+              style={[
+                styles.settingRow,
+                !locationPermissionGranted && styles.disabledRow,
+              ]}
+            >
+              <Text
+                style={[
+                  styles.settingLabel,
+                  !locationPermissionGranted && styles.disabledLabel,
+                ]}
+              >
+                Show User Location
+              </Text>
               <Switch
                 value={showsUserLocation}
                 onValueChange={setShowsUserLocation}
+                disabled={!locationPermissionGranted}
                 trackColor={{ false: "#ccc", true: "#007AFF" }}
                 thumbColor="#fff"
                 accessibilityLabel="Toggle user location visibility"
@@ -116,5 +147,27 @@ const styles = StyleSheet.create({
   settingLabel: {
     fontSize: 16,
     color: "#333",
+  },
+  disabledRow: {
+    opacity: 0.5,
+  },
+  disabledLabel: {
+    color: "#999",
+  },
+  permissionButton: {
+    backgroundColor: "#007AFF",
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 6,
+  },
+  permissionButtonText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "600",
+  },
+  permissionGrantedText: {
+    color: "#007AFF",
+    fontSize: 14,
+    fontWeight: "500",
   },
 });
