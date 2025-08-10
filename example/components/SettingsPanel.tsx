@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import { MapTypeSelector } from "./MapTypeSelector";
 import { LocationPresets } from "./LocationPresets";
-import { CurrentPosition } from "./CurrentPosition";
+import { CurrentCameraPosition } from "./CurrentPosition";
 import { useMapStateContext } from "../contexts/MapStateContext";
 
 export function SettingsPanel() {
@@ -57,9 +57,7 @@ export function SettingsPanel() {
             <MapTypeSelector selectedType={mapType} onTypeChange={setMapType} />
 
             <View style={styles.settingRow}>
-              <Text style={styles.settingLabel}>
-                Location Permission {locationPermissionGranted ? "✓" : ""}
-              </Text>
+              <Text style={styles.settingLabel}>Location Permission</Text>
               {!locationPermissionGranted ? (
                 <TouchableOpacity
                   style={styles.permissionButton}
@@ -108,7 +106,7 @@ export function SettingsPanel() {
             </View>
 
             <LocationPresets onLocationSelect={handleLocationPreset} />
-            <CurrentPosition position={cameraPosition} />
+            <CurrentCameraPosition position={cameraPosition} />
           </ScrollView>
         </TouchableOpacity>
       </TouchableOpacity>
@@ -141,8 +139,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 4,
-    marginBottom: 4,
+    height: 40,
   },
   settingLabel: {
     fontSize: 16,

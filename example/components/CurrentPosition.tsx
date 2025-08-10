@@ -4,15 +4,13 @@ import type { CameraPosition } from "native-maps";
 
 const COORDINATE_PRECISION = 6;
 
-interface CurrentPositionProps {
+interface Props {
   position: CameraPosition;
 }
 
-export const CurrentPosition: React.FC<CurrentPositionProps> = ({
-  position,
-}) => (
+export const CurrentCameraPosition: React.FC<Props> = ({ position }) => (
   <>
-    <Text style={styles.sectionTitle}>Current Position</Text>
+    <Text style={styles.sectionTitle}>Camera Position</Text>
     <View style={styles.container}>
       <Text style={styles.text}>
         Lat: {position.latitude.toFixed(COORDINATE_PRECISION)}
