@@ -1,10 +1,15 @@
 import React, { createContext, useContext } from "react";
-import type { AppleMapsViewRef } from "native-maps";
+import type {
+  AppleMapsViewRef,
+  MapPressEvent,
+  CameraPositionChangeEvent,
+} from "native-maps";
 import { useMapState } from "../hooks/useMapState";
 import type { MapState, MapActions } from "../types";
 
 interface MapStateContextType extends MapState, MapActions {
-  handleMapPress: (event: any) => void;
+  handleMapPress: (event: MapPressEvent) => void;
+  handleCameraPositionChange: (event: CameraPositionChangeEvent) => void;
 }
 
 const MapStateContext = createContext<MapStateContextType | undefined>(

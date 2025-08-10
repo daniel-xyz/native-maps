@@ -1,7 +1,3 @@
-/**
- * Component for displaying info about the current camera position
- */
-
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import type { CameraPosition } from "native-maps";

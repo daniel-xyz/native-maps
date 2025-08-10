@@ -1,4 +1,8 @@
-import type { MapPressEvent, AppleMapsViewRef } from "native-maps";
+import type {
+  MapPressEvent,
+  AppleMapsViewRef,
+  CameraPositionChangeEvent,
+} from "native-maps";
 import type { MapState, MapActions } from "../../types";
 
 /**
@@ -6,6 +10,7 @@ import type { MapState, MapActions } from "../../types";
  */
 export interface UseMapStateReturn extends MapState, MapActions {
   handleMapPress: (event: MapPressEvent) => void;
+  handleCameraPositionChange: (event: CameraPositionChangeEvent) => void;
 }
 
 /**

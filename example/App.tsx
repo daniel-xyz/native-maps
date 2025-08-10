@@ -13,7 +13,8 @@ function MapContent({
   mapRef: React.RefObject<AppleMapsViewRef | null>;
 }) {
   const { mapType, showsUserLocation } = useMapStateContext();
-  const { cameraPosition, handleMapPress } = useMapStateContext();
+  const { cameraPosition, handleMapPress, handleCameraPositionChange } =
+    useMapStateContext();
 
   return (
     <>
@@ -22,6 +23,7 @@ function MapContent({
         ref={mapRef}
         style={styles.map}
         onMapPress={handleMapPress}
+        onCameraPositionChange={handleCameraPositionChange}
         cameraPosition={cameraPosition}
         showsUserLocation={showsUserLocation}
         mapType={mapType}

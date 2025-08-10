@@ -1,21 +1,19 @@
 import { useState, useEffect, useCallback } from "react";
 import * as Location from "expo-location";
-import type { MapPressEvent, MapType, CameraPositionChange } from "native-maps";
+import type {
+  MapPressEvent,
+  MapType,
+  CameraPositionChange,
+  CameraPositionChangeEvent,
+} from "native-maps";
 import type { PresetLocation } from "../types";
 import {
   DEFAULT_CAMERA_POSITION,
-  formatCoordinate,
-  isValidMapPressEvent,
   updateCameraPosition,
   type UseMapStateReturn,
   type UseMapStateProps,
 } from "./map-state";
 
-/**
- * Custom hook for managing map state and interactions
- * @param mapRef - Reference to the AppleMapsView component
- * @returns Map state, actions, and event handlers
- */
 export const useMapState = ({
   mapRef,
 }: UseMapStateProps): UseMapStateReturn => {
@@ -29,20 +27,9 @@ export const useMapState = ({
   const [locationPermissionGranted, setLocationPermissionGranted] =
     useState(false);
 
-  const handleMapPress = useCallback(
-    (event: MapPressEvent) => {
-      if (!isValidMapPressEvent(event)) {
-        console.warn("Map pressed but no coordinate data available", { event });
-        return;
-      }
-
-      const coordinate = event.nativeEvent.coordinate;
-      const formattedCoordinate = formatCoordinate(coordinate);
-
-      console.log("Map pressed at coordinates:", { formattedCoordinate });
-    },
-    [isValidMapPressEvent, formatCoordinate]
-  );
+  const handleMapPress = useCallback((event: MapPressEvent) => {
+    console.log("MapPressEvent: ", event.nativeEvent);
+  }, []);
 
   const handleLocationPreset = useCallback(
     (location: PresetLocation) => {
@@ -56,9 +43,21 @@ export const useMapState = ({
     [mapRef, animateCamera]
   );
 
+  const handleCameraPositionChange = useCallback(
+    (event: CameraPositionChangeEvent) => {
+      console.log("CameraPositionChangeEvent: ", event.nativeEvent);
+      setCameraPosition({
+        latitude: event.nativeEvent.latitude,
+        longitude: event.nativeEvent.longitude,
+        zoom: event.nativeEvent.zoom,
+      });
+    },
+    []
+  );
+
   const toggleSettings = useCallback(() => {
     setShowSettings((prev) => !prev);
-  }, [showSettings]);
+  }, []);
 
   const requestLocationPermission = useCallback(async () => {
     try {
@@ -86,7 +85,6 @@ export const useMapState = ({
         const granted = status === "granted";
         setLocationPermissionGranted(granted);
 
-        // If permission was already granted, enable user location
         if (granted) {
           setShowsUserLocation(true);
         }
@@ -118,6 +116,7 @@ export const useMapState = ({
     // Action handlers
     handleMapPress,
     handleLocationPreset,
+    handleCameraPositionChange,
     toggleSettings,
     requestLocationPermission,
   };

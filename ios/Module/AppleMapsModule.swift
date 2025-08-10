@@ -12,8 +12,7 @@ public class AppleMapsModule: Module {
 
         let zoom = region["zoom"] ?? 12.0
         guard zoom > 0 && zoom.isFinite else { return }
-
-        // Route through the unified setter which ensures main-thread execution
+        
         view.setCameraPosition(latitude: lat, longitude: lng, zoom: zoom, animated: false)
       }
       
@@ -33,11 +32,10 @@ public class AppleMapsModule: Module {
       }
       
       AsyncFunction("setCameraPosition") { (view: AppleMapsView, latitude: Double, longitude: Double, zoom: Double, animated: Bool?) in
-        print("📍 setCameraPosition - lat: \(latitude), lng: \(longitude), zoom: \(zoom)")
         view.setCameraPosition(latitude: latitude, longitude: longitude, zoom: zoom, animated: animated ?? true)
       }
       
-      Events("onMapPress")
+      Events("onMapPress", "onCameraPositionChange")
     }
   }
 }

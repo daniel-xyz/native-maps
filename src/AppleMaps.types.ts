@@ -26,12 +26,17 @@ export type MapPressEvent = {
   };
 };
 
+export type CameraPositionChangeEvent = {
+  nativeEvent: CameraPosition;
+};
+
 export type AppleMapsViewRef = {
   setCameraPosition: (props: CameraPositionChange) => Promise<void>;
 };
 
 export type AppleMapsViewProps = {
   onMapPress?: (event: MapPressEvent) => void;
+  onCameraPositionChange?: (event: CameraPositionChangeEvent) => void;
   style?: StyleProp<ViewStyle>;
   cameraPosition?: CameraPosition;
   showsUserLocation?: boolean;

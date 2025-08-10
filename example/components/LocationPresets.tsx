@@ -1,7 +1,3 @@
-/**
- * Component for displaying and selecting preset locations
- */
-
 import React from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
 import type { PresetLocation } from "../types";
