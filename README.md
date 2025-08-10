@@ -1,39 +1,43 @@
 # NativeMaps
 
-An **experimental** React Native maps library. It's my first native module project, built as a way to learn React Native’s new architecture and platform-native languages.
+An **experimental** React Native maps library.
 
-> **Note:** This is a work in progress and **not production-ready**.
+It’s my first native module project, built as a way to learn React Native’s New Architecture and platform-native languages (Swift, Kotlin).
+
+> **Disclaimer:** This library is in early development and will change often.  
+> Use it for learning or experimentation - **not** production apps.
 
 ## Goals
 
-- 🚀 **Performance-focused** using TurboModules, Fabric, and NitroModules
-- 🍏 **Cross-platform** support for Apple MapKit (iOS) and Google Maps (Android)
-- 📍 **Marker clustering** built-in and real-time
-- 🔌 **Production-ready** sometime in the future
+🚀 **Performance-focused** - built with Fabric for native rendering speed  
+🍏 **Cross-platform** - Apple MapKit on iOS, Google Maps on Android  
+🔌 **Native APIs** - expose rich platform APIs  
+📍 **Marker clustering** - handled natively and in real-time
 
 ## Roadmap
 
-### Apple Maps (iOS)
+### ✅ Done
 
-- [x] Basic AppleMaps view with props
-- [ ] Markers and onPress events
-- [ ] Custom markers
+- Basic Apple Maps view with props
 
-### Google Maps (Android)
+### 🚧 In Progress
 
-- [ ] Basic GoogleMaps view with props
-- [ ] Markers and onPress events
-- [ ] Custom markers
+- Apple Maps: markers & `onPress` events
 
-### Further away
+### 📅 Planned
 
-- [ ] Fully native Marker Clustering (not depending on React render cycle)
-- [ ] Publish library to npm
+- Apple Maps: custom markers
+- Fully native marker clustering
+- Google Maps: basic view with props
+- Google Maps: markers & `onPress` events
+- Google Maps: custom markers
+- Publish library to npm
 
-### Even further away and might never happen
+### 🧪 Long-term ideas and experiments
 
-- [ ] Google Maps for iOS
-- [ ] Web Support
+- Explore using NitroModules
+- Google Maps for iOS
+- Web support
 
 ## License
 
