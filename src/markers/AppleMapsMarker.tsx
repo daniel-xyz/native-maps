@@ -1,11 +1,6 @@
 import * as React from "react";
-import type { AppleMapsMarker as AppleMapsMarkerType } from "../AppleMaps.types";
+import type { AppleMapsMarker as AppleMapsMarkerProps } from "../AppleMaps.types";
 import { AppleMapsViewContext } from "./useCreateMarkerRegistry";
-
-/**
- * Props for the AppleMapsMarker component
- */
-export interface AppleMapsMarkerProps extends AppleMapsMarkerType {}
 
 /**
  * A marker component for Apple Maps.
