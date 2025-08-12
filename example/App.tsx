@@ -7,14 +7,19 @@ import {
   useMapStateContext,
 } from "./contexts/MapStateContext";
 
-function MapContent({
-  mapRef,
-}: {
+interface MapContentProps {
   mapRef: React.RefObject<AppleMapsViewRef | null>;
-}) {
-  const { mapType, showsUserLocation } = useMapStateContext();
-  const { cameraPosition, handleMapPress, handleCameraPositionChange } =
-    useMapStateContext();
+}
+
+function MapContent({ mapRef }: MapContentProps) {
+  const {
+    mapType,
+    showsUserLocation,
+    testMarkers,
+    cameraPosition,
+    handleMapPress,
+    handleCameraPositionChange,
+  } = useMapStateContext();
 
   return (
     <>
@@ -27,7 +32,16 @@ function MapContent({
         cameraPosition={cameraPosition}
         showsUserLocation={showsUserLocation}
         mapType={mapType}
-      />
+      >
+        {testMarkers.map((marker) => (
+          <AppleMaps.Marker
+            key={marker.id}
+            id={marker.id}
+            coordinates={marker.coordinates}
+            title={marker.title}
+          />
+        ))}
+      </AppleMaps.View>
       <SettingsPanel />
     </>
   );

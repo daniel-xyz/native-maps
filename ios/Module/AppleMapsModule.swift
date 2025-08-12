@@ -35,6 +35,10 @@ public class AppleMapsModule: Module {
         view.setCameraPosition(latitude: latitude, longitude: longitude, zoom: zoom, animated: animated ?? true)
       }
       
+      Prop("markers") { (view: AppleMapsView, markers: [MarkerRecord]?) in
+        view.updateMarkers(markers)
+      }
+      
       Events("onMapPress", "onCameraPositionChange")
     }
   }

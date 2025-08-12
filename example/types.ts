@@ -2,6 +2,7 @@ import type {
   MapType,
   CameraPosition,
   CameraPositionChange,
+  AppleMapsMarker,
 } from "native-maps";
 
 export type PresetLocation = CameraPositionChange & {
@@ -10,6 +11,13 @@ export type PresetLocation = CameraPositionChange & {
 
 export type { MapType, CameraPosition };
 
+export type MarkerTestPreset = {
+  name: string;
+  description: string;
+  count: number;
+  generateMarkers: (center: CameraPosition) => AppleMapsMarker[];
+};
+
 export interface MapState {
   showSettings: boolean;
   mapType: MapType;
@@ -17,6 +25,8 @@ export interface MapState {
   cameraPosition: CameraPosition;
   animateCamera: boolean;
   locationPermissionGranted: boolean;
+  testMarkers: AppleMapsMarker[];
+  activeMarkerPreset: string | null;
 }
 
 export interface MapActions {
@@ -28,4 +38,8 @@ export interface MapActions {
   handleLocationPreset: (location: PresetLocation) => void;
   toggleSettings: () => void;
   requestLocationPermission: () => Promise<void>;
+  setTestMarkers: (markers: AppleMapsMarker[]) => void;
+  setActiveMarkerPreset: (presetName: string | null) => void;
+  loadMarkerPreset: (preset: MarkerTestPreset) => void;
+  clearMarkers: () => void;
 }

@@ -1,7 +1,3 @@
-/**
- * Component for displaying various settings for the map
- */
-
 import React from "react";
 import {
   Modal,
@@ -16,6 +12,7 @@ import {
 import { MapTypeSelector } from "./MapTypeSelector";
 import { LocationPresets } from "./LocationPresets";
 import { CurrentCameraPosition } from "./CurrentPosition";
+import { MarkerTestingPanel } from "./MarkerTestingPanel";
 import { useMapStateContext } from "../contexts/MapStateContext";
 
 export function SettingsPanel() {
@@ -40,19 +37,21 @@ export function SettingsPanel() {
       transparent={true}
       onRequestClose={toggleSettings}
     >
-      <TouchableOpacity
-        style={styles.modalOverlay}
-        activeOpacity={1}
-        onPress={toggleSettings}
-      >
+      <View style={styles.modalOverlay}>
         <TouchableOpacity
-          style={styles.modalContainer}
+          style={styles.backgroundTouchArea}
           activeOpacity={1}
-          onPress={(e) => e.stopPropagation()}
-        >
+          onPress={toggleSettings}
+        />
+        <View style={styles.modalContainer}>
           <ScrollView
             style={styles.content}
-            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scrollContent}
+            showsVerticalScrollIndicator={true}
+            bounces={true}
+            keyboardShouldPersistTaps="handled"
+            scrollEventThrottle={16}
+            nestedScrollEnabled={true}
           >
             <MapTypeSelector selectedType={mapType} onTypeChange={setMapType} />
 
@@ -84,32 +83,37 @@ export function SettingsPanel() {
               >
                 Show User Location
               </Text>
-              <Switch
-                value={showsUserLocation}
-                onValueChange={setShowsUserLocation}
-                disabled={!locationPermissionGranted}
-                trackColor={{ false: "#ccc", true: "#007AFF" }}
-                thumbColor="#fff"
-                accessibilityLabel="Toggle user location visibility"
-              />
+              <View style={styles.switchContainer}>
+                <Switch
+                  value={showsUserLocation}
+                  onValueChange={setShowsUserLocation}
+                  disabled={!locationPermissionGranted}
+                  trackColor={{ false: "#ccc", true: "#007AFF" }}
+                  thumbColor="#fff"
+                  accessibilityLabel="Toggle user location visibility"
+                />
+              </View>
             </View>
 
             <View style={styles.settingRow}>
               <Text style={styles.settingLabel}>Animate Camera</Text>
-              <Switch
-                value={animateCamera}
-                onValueChange={setAnimateCamera}
-                trackColor={{ false: "#ccc", true: "#007AFF" }}
-                thumbColor="#fff"
-                accessibilityLabel="Toggle camera animations"
-              />
+              <View style={styles.switchContainer}>
+                <Switch
+                  value={animateCamera}
+                  onValueChange={setAnimateCamera}
+                  trackColor={{ false: "#ccc", true: "#007AFF" }}
+                  thumbColor="#fff"
+                  accessibilityLabel="Toggle camera animations"
+                />
+              </View>
             </View>
 
             <LocationPresets onLocationSelect={handleLocationPreset} />
+            <MarkerTestingPanel />
             <CurrentCameraPosition position={cameraPosition} />
           </ScrollView>
-        </TouchableOpacity>
-      </TouchableOpacity>
+        </View>
+      </View>
     </Modal>
   );
 }
@@ -120,6 +124,15 @@ const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
     justifyContent: "flex-end",
+    position: "relative",
+  },
+  backgroundTouchArea: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 1,
   },
   modalContainer: {
     height: screenHeight * 0.75,
@@ -130,20 +143,32 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+    zIndex: 2, // Ensure modal content is above background touch area
   },
   content: {
     flex: 1,
+  },
+  scrollContent: {
     paddingHorizontal: 16,
+    paddingTop: 20,
+    paddingBottom: 40,
   },
   settingRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    height: 40,
+    minHeight: 44, // Increased for better touch targets
+    paddingVertical: 4,
   },
   settingLabel: {
     fontSize: 16,
     color: "#333",
+    flex: 1,
+  },
+  switchContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingLeft: 8, // Add some spacing from the label
   },
   disabledRow: {
     opacity: 0.5,

@@ -19,19 +19,22 @@ It’s my first native module project, built as a way to learn React Native’s 
 ### ✅ Done
 
 - Basic Apple Maps view with props
+- Apple Maps: show native markers with some basic props
 
 ### 🚧 In Progress
 
-- Apple Maps: markers & `onPress` events
+- Apple Maps: custom markers
 
 ### 📅 Planned
 
-- Apple Maps: custom markers
 - Fully native marker clustering
 - Google Maps: basic view with props
-- Google Maps: markers & `onPress` events
-- Google Maps: custom markers
+- Google Maps: show native markers
+- Google Maps: custom (advanced) markers
+- Good test coverage
+- Good documentation
 - Publish library to npm
+- Reach feature parity with expo-maps
 
 ### 🧪 Long-term ideas and experiments
 

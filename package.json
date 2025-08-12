@@ -14,6 +14,7 @@
     "expo-module": "expo-module",
     "open:ios": "xed example/ios",
     "open:android": "open -a \"Android Studio\" example/android",
+    "pod-install": "cd example && bunx pod-install",
     "run:ios": "cd example && expo run:ios",
     "run:android": "cd example && expo run:android"
   },

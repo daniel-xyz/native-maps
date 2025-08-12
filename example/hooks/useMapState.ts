@@ -5,8 +5,9 @@ import type {
   MapType,
   CameraPositionChange,
   CameraPositionChangeEvent,
+  AppleMapsMarker,
 } from "native-maps";
-import type { PresetLocation } from "../types";
+import type { PresetLocation, MarkerTestPreset } from "../types";
 import {
   DEFAULT_CAMERA_POSITION,
   updateCameraPosition,
@@ -26,6 +27,10 @@ export const useMapState = ({
   );
   const [locationPermissionGranted, setLocationPermissionGranted] =
     useState(false);
+  const [testMarkers, setTestMarkers] = useState<AppleMapsMarker[]>([]);
+  const [activeMarkerPreset, setActiveMarkerPreset] = useState<string | null>(
+    null
+  );
 
   const handleMapPress = useCallback((event: MapPressEvent) => {
     console.log("MapPressEvent: ", event.nativeEvent);
@@ -77,6 +82,30 @@ export const useMapState = ({
     }
   }, []);
 
+  const loadMarkerPreset = useCallback(
+    (preset: MarkerTestPreset) => {
+      try {
+        const markers = preset.generateMarkers(cameraPosition);
+        setTestMarkers(markers);
+        setActiveMarkerPreset(preset.name);
+        console.log(
+          `Loaded ${markers.length} markers for preset: ${preset.name}`
+        );
+      } catch (error) {
+        console.error("Error loading marker preset:", error);
+        // Clear markers on error to avoid corrupted state
+        setTestMarkers([]);
+        setActiveMarkerPreset(null);
+      }
+    },
+    [cameraPosition]
+  );
+
+  const clearMarkers = useCallback(() => {
+    setTestMarkers([]);
+    setActiveMarkerPreset(null);
+  }, []);
+
   // Check location permission status on mount
   useEffect(() => {
     const checkLocationPermission = async () => {
@@ -105,6 +134,8 @@ export const useMapState = ({
     cameraPosition,
     animateCamera,
     locationPermissionGranted,
+    testMarkers,
+    activeMarkerPreset,
 
     // State setters
     setShowSettings,
@@ -112,6 +143,8 @@ export const useMapState = ({
     setShowsUserLocation,
     setCameraPosition,
     setAnimateCamera,
+    setTestMarkers,
+    setActiveMarkerPreset,
 
     // Action handlers
     handleMapPress,
@@ -119,5 +152,7 @@ export const useMapState = ({
     handleCameraPositionChange,
     toggleSettings,
     requestLocationPermission,
+    loadMarkerPreset,
+    clearMarkers,
   };
 };

@@ -5,35 +5,57 @@ import {
   AppleMapsViewProps,
   AppleMapsViewRef,
   CameraPositionChange,
+  AppleMapsMarker,
 } from "./AppleMaps.types";
+import {
+  AppleMapsViewContext,
+  useCreateMarkerRegistry,
+} from "./markers/useCreateMarkerRegistry";
 
-const NativeView: React.ComponentType<AppleMapsViewProps & { ref?: any }> =
+type NativeViewPropsInternal = AppleMapsViewProps & {
+  markers?: AppleMapsMarker[];
+};
+
+const NativeView: React.ComponentType<NativeViewPropsInternal & { ref?: any }> =
   requireNativeView("AppleMaps");
 
-const AppleMapsView = React.forwardRef<AppleMapsViewRef, AppleMapsViewProps>(
-  (props, ref) => {
-    const nativeRef = React.useRef<any>(null);
+export interface AppleMapsViewWithChildrenProps extends AppleMapsViewProps {
+  children?: React.ReactNode;
+}
 
-    React.useImperativeHandle(
-      ref,
-      () => ({
-        setCameraPosition: async (props: CameraPositionChange) => {
-          if (nativeRef.current?.setCameraPosition) {
-            await nativeRef.current.setCameraPosition(
-              props.latitude,
-              props.longitude,
-              props.zoom,
-              props.animated
-            );
-          }
-        },
-      }),
-      []
-    );
+const AppleMapsView = React.forwardRef<
+  AppleMapsViewRef,
+  AppleMapsViewWithChildrenProps
+>(({ children, ...props }, ref) => {
+  const nativeRef = React.useRef<any>(null);
+  const { markerRegistry, markersArray } = useCreateMarkerRegistry();
 
-    return <NativeView ref={nativeRef} {...props} />;
-  }
-);
+  React.useImperativeHandle(
+    ref,
+    () => ({
+      setCameraPosition: async (props: CameraPositionChange) => {
+        if (nativeRef.current?.setCameraPosition) {
+          await nativeRef.current.setCameraPosition(
+            props.latitude,
+            props.longitude,
+            props.zoom,
+            props.animated
+          );
+        }
+      },
+    }),
+    []
+  );
+
+  return (
+    <AppleMapsViewContext.Provider value={markerRegistry}>
+      <>
+        <NativeView ref={nativeRef} {...props} markers={markersArray} />
+        {children}
+      </>
+    </AppleMapsViewContext.Provider>
+  );
+});
 
 AppleMapsView.displayName = "AppleMapsView";
 

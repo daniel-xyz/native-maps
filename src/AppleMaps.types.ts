@@ -34,6 +34,12 @@ export type AppleMapsViewRef = {
   setCameraPosition: (props: CameraPositionChange) => Promise<void>;
 };
 
+export type AppleMapsMarker = {
+  id: string;
+  coordinates: Coordinate;
+  title?: string;
+};
+
 export type AppleMapsViewProps = {
   onMapPress?: (event: MapPressEvent) => void;
   onCameraPositionChange?: (event: CameraPositionChangeEvent) => void;
